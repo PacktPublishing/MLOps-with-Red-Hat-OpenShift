@@ -1,0 +1,21 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: versioned-wine-model
+  namespace: wines
+  labels:
+    name: model-{{ model_version }}
+    opendatahub.io/dashboard: 'true'
+  annotations:
+    openshift.io/display-name: model-{{ model_version }}
+    serving.kserve.io/deploymentMode: ModelMesh
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: sklearn
+        version: '0'
+      runtime: wine
+      storage:
+        key: aws-connection-wine-models
+        path: model-{{ model_version }}
