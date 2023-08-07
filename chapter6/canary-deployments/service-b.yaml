@@ -1,0 +1,26 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: wines-a
+  namespace: wines
+spec:
+  ports:
+    - name: grpc
+      protocol: TCP
+      port: 8033
+      targetPort: grpc
+    - name: http
+      protocol: TCP
+      port: 8008
+      targetPort: http
+    - name: https
+      protocol: TCP
+      port: 8443
+      targetPort: https
+    - name: prometheus
+      protocol: TCP
+      port: 2112
+      targetPort: prometheus
+  type: ClusterIP
+  selector:
+    name: modelmesh-serving-a-wine-server
