@@ -1,7 +1,7 @@
 apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
-  name: versioned-wine-model
+  name: wine-model
   namespace: wines
   labels:
     name: model-{{ model_version }}

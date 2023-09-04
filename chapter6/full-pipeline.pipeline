@@ -216,7 +216,7 @@
         "version": 8,
         "runtime_type": "KUBEFLOW_PIPELINES",
         "properties": {
-          "name": "untitled",
+          "name": "full-pipeline",
           "runtime": "Data Science Pipelines",
           "pipeline_defaults": {
             "kubernetes_tolerations": [],
