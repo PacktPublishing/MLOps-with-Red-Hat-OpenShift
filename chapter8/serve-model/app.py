@@ -21,8 +21,8 @@ import base64
 import aiohttp_cors
 
 
-MODEL_SERVER = os.getenv('MODEL_SERVER', 'localhost:8033') # modelmesh-serving.wines.svc.cluster.local:8033')
-REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://localhost:6379') # redis.wines.svc.cluster.local:6379')
+MODEL_SERVER = os.getenv('MODEL_SERVER', 'modelmesh-serving.wines.svc.cluster.local:8033')
+REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis.wines.svc.cluster.local:6379')
 GRPC_CLIENT = "grpc_client"
 REDIS_CLIENT = "redis_client"
 
