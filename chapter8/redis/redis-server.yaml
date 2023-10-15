@@ -1,0 +1,122 @@
+---
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  annotations:
+    openshift.io/image.dockerRepositoryCheck: '2023-10-15T05:56:27Z'
+  name: redis
+  namespace: wines
+  labels:
+    app: redis
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/instance: redis
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/part-of: redis
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: 6.2.6-debian-10-r103
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+        openshift.io/imported-from: 'bitnami/redis:6.2.6-debian-10-r103'
+      from:
+        kind: DockerImage
+        name: 'bitnami/redis:6.2.6-debian-10-r103'
+      generation: 2
+      importPolicy:
+        insecure: true
+        importMode: Legacy
+      referencePolicy:
+        type: Local
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: redis
+  uid: e1286531-a084-478b-93af-1684fd5fdf59
+  namespace: wines
+  labels:
+    app: redis
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/instance: redis
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/part-of: redis
+    app.openshift.io/runtime: redis
+    app.openshift.io/runtime-namespace: wines
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: redis
+        deployment: redis
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+    spec:
+      containers:
+        - name: redis
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/wines/redis@sha256:3d6055b1addad726b590df6d75a538a64d29f0d44c0dcf39c855173c0a3eb2da
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: 'yes'
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: redis
+  namespace: wines
+  labels:
+    app: redis
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/instance: redis
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/part-of: redis
+    app.openshift.io/runtime-version: 6.2.6-debian-10-r103
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  
+spec:
+  clusterIP: 172.30.162.40
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: 6379-tcp
+      protocol: TCP
+      port: 6379
+      targetPort: 6379
+  internalTrafficPolicy: Cluster
+  clusterIPs:
+    - 172.30.162.40
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app: redis
+    deployment: redis
+

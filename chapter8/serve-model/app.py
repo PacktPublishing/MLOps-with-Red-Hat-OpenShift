@@ -19,7 +19,7 @@ import numpy as np
 import json
 
 MODEL_SERVER = os.getenv('MODEL_SERVER', 'https://fm-test-wines.apps.fmflask2.faisallabs.net') #'modelmesh-serving.wines.svc.cluster.local:8033')
-REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://localhost:6379')
+REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://redis.wines.svc.cluster.local:6379')
 GRPC_CLIENT = "grpc_client"
 REDIS_CLIENT = "redis_client"
 

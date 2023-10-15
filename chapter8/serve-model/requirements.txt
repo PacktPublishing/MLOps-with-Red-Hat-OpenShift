@@ -1,3 +1,6 @@
 aiohttp==3.8.4
 aioredis==2.0.1
 tritonclient==2.36.0
+openvino==2023.1.0
+openvino-dev==2023.1.0
+openvino-telemetry==2023.1.1
