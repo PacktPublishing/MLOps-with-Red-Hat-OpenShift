@@ -117,8 +117,9 @@
                 var imgData = context.getImageData(0, 0, width, height).data;
                 var data = canvas.toDataURL('image/png');
                 photo.setAttribute('src', data);
+                console.log(btoa(imgData));
                 $.ajax({
-                  url: 'http://localhost:8000',
+                  url: 'http://localhost:8080',
                   type: 'POST',
                   data: btoa(imgData),
                   dataType: 'text',

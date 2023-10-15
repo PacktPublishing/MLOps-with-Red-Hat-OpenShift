@@ -8,6 +8,7 @@
 '''
 
 import os
+import re
 import aioredis
 
 from aiohttp import  web
@@ -16,10 +17,12 @@ from aiohttp.web_response import Response
 from aiohttp.web_app import Application
 import tritonclient.grpc as grpcclient
 import numpy as np
-import json
+import base64
+import aiohttp_cors
 
-MODEL_SERVER = os.getenv('MODEL_SERVER', 'modelmesh-serving.wines.svc.cluster.local:8033')
-REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://redis.wines.svc.cluster.local:6379')
+
+MODEL_SERVER = os.getenv('MODEL_SERVER', 'localhost:8033') # modelmesh-serving.wines.svc.cluster.local:8033')
+REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://localhost:6379') # redis.wines.svc.cluster.local:6379')
 GRPC_CLIENT = "grpc_client"
 REDIS_CLIENT = "redis_client"
 
@@ -64,13 +67,32 @@ async def infer(request: Request) -> Response:
     return web.Response(text=response)
 
 async def increment_face_counter():
-    async with REDIS_CLIENT as conn:
-        return await conn.incr('face-count', amount=1)
+    redis = app[REDIS_CLIENT]
+    await redis.incr('face-count', amount=1)
 
 
 async def infer_request(request) -> bool:
 
-    video_frame = np.random.randn(1, 256, 256, 3).astype(np.float32)
+    # video_frame = np.random.randn(1, 256, 256, 3).astype(np.float32)
+    # print(video_frame)
+
+    # raw_frame = await request.text()
+    raw_frame = await request.read()
+    decoded_frame = base64.b64decode(raw_frame).decode()
+    values = [int(i) for i in decoded_frame.split(',')]
+    image_width = 255 * 4
+    image_frame:int = np.zeros((256, 256, 3), dtype=np.float32)
+    for i in range(0, 256):
+        for j in range (0, 256):
+            firstitem = (i * (image_width)) + (j * 4)
+            image_frame[i][j][0] = np.float32(values[firstitem])
+            image_frame[i][j][1] = np.float32(values[firstitem+1])
+            image_frame[i][j][2] = np.float32(values[firstitem+2])
+
+    # video_frame = np.array(image_frame)
+    # video_frame = np.array(decoded_frame.split(',').encode())
+    video_frame = image_frame.reshape(1, 256, 256, 3)
+    # print(rb)
 
     inputs = []
     outputs = []
@@ -81,25 +103,28 @@ async def infer_request(request) -> bool:
     outputs.append(grpcclient.InferRequestedOutput('pred'))
 
     # Test with outputs
-    results = await app[GRPC_CLIENT].infer(model_name=model_name,
+    results = app[GRPC_CLIENT].infer(model_name=model_name,
                                     inputs=inputs,
                                     outputs=outputs)
-    print(results)
+    print(f"Raw results are {results}")
     # Get the output arrays from the results
     output0_data = results.as_numpy('pred')
-    print(json.dumps(output0_data, indent=2))
-    print(len(json.loads(output0_data, indent=2)))
+    flatten_data = output0_data.flatten()
+    # print(flatten_data[0])
+    # print(flatten_data[1])
+    # print(flatten_data[2])
+    max_confidence_index = np.argmax(flatten_data)
+    print(max_confidence_index)
 
 
 
 @routes.get('/infer-count') 
 async def get_infer_count(request: Request) -> Response:
-    print("Infere count")
-    redis = app[REDIS_CLIENT]
-    await redis.incr('face-count', amount=1)
+    redis = app[REDIS_CLIENT]    
     value = await redis.get('face-count')
-    print("==" + value)
+    print(f"Infer Count ->{value}")
     return web.Response(text=value)
+
 
 
 app = web.Application()  
@@ -109,4 +134,17 @@ create_grpc_pool(app)
 app.on_startup.append(create_redis_client)
 
 app.add_routes(routes)
+
+cors = aiohttp_cors.setup(app, defaults={
+"*": aiohttp_cors.ResourceOptions(
+    allow_credentials=True,
+    expose_headers="*",
+    allow_headers="*"
+)
+})
+
+for route in list(app.router.routes()):
+    cors.add(route)
+
+    
 web.run_app(app)
