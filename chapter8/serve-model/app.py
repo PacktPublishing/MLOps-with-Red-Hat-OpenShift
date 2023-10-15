@@ -22,7 +22,7 @@ import aiohttp_cors
 
 
 MODEL_SERVER = os.getenv('MODEL_SERVER', 'modelmesh-serving.wines.svc.cluster.local:8033')
-REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis.wines.svc.cluster.local:6379')
+REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://redis.wines.svc.cluster.local:6379')
 GRPC_CLIENT = "grpc_client"
 REDIS_CLIENT = "redis_client"
 
