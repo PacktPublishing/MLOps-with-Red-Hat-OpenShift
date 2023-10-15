@@ -59,12 +59,12 @@ async def create_redis_client(app: Application):
 
 @routes.post('/infer') 
 async def infer(request: Request) -> Response:
-    response = await infer_request(request)
-    face_or_not = True
-    if face_or_not:
+    max_confidence_index = await infer_request(request)
+    #2 is face
+    if max_confidence_index == 2:
         await increment_face_counter()
 
-    return web.Response(text=response)
+    return web.Response(text=str(max_confidence_index))
 
 async def increment_face_counter():
     redis = app[REDIS_CLIENT]
@@ -114,7 +114,8 @@ async def infer_request(request) -> bool:
     # print(flatten_data[1])
     # print(flatten_data[2])
     max_confidence_index = np.argmax(flatten_data)
-    print(max_confidence_index)
+    # print(max_confidence_index)
+    return max_confidence_index
 
 
 
@@ -127,7 +128,7 @@ async def get_infer_count(request: Request) -> Response:
 
 
 
-app = web.Application()  
+app = web.Application(client_max_size=1905280)  
 
 #blocking connection establishment
 create_grpc_pool(app)

@@ -48,6 +48,11 @@
         <h4>Captured Image</h4>
         <img id="image" alt="The screen capture will appear in this box.">
     </div>
+
+    <div>
+        <h4>Face Counter</h4>
+        <h4 id="counter"></h4>
+    </div>
 </div>
 
 
@@ -90,12 +95,13 @@
                 }
             }, false);
 
-            setTimeout(tnc, 250);
+            setTimeout(tnc, 100);
         }
 
         function tnc(){
             takepicture();
-            setTimeout(tnc, 250);
+            refreshFaceCounter();
+            setTimeout(tnc, 100);
         }
 
 
@@ -106,6 +112,20 @@
 
             var data = canvas.toDataURL('image/png');
             photo.setAttribute('src', data);
+        }
+
+        function refreshFaceCounter(){
+            $.ajax({
+                  url: 'http://localhost:8080/infer-count',
+                  type: 'GET',
+                  async: true,
+                 success: function (result) {
+                    //    console.log("Infer Count is" + result);
+                       document.getElementById('counter').textContent = result;
+                 },
+
+                });
+
         }
 
         function takepicture() {
@@ -119,7 +139,7 @@
                 photo.setAttribute('src', data);
                 console.log(btoa(imgData));
                 $.ajax({
-                  url: 'http://localhost:8080',
+                  url: 'http://localhost:8080/infer',
                   type: 'POST',
                   data: btoa(imgData),
                   dataType: 'text',
