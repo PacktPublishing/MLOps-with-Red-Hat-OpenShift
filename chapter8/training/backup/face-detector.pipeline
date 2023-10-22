@@ -1,0 +1,184 @@
+{
+  "doc_type": "pipeline",
+  "version": "3.0",
+  "json_schema": "http://api.dataplatform.ibm.com/schemas/common-pipeline/pipeline-flow/pipeline-flow-v3-schema.json",
+  "id": "elyra-auto-generated-pipeline",
+  "primary_pipeline": "primary",
+  "pipelines": [
+    {
+      "id": "primary",
+      "nodes": [
+        {
+          "id": "42958022-3bfe-42e9-ad98-38c18f2d4825",
+          "type": "execution_node",
+          "op": "execute-notebook-node",
+          "app_data": {
+            "component_parameters": {
+              "dependencies": [
+                "data.zip",
+                "test.zip"
+              ],
+              "include_subdirectories": false,
+              "outputs": [
+                "face-detector-model.h5"
+              ],
+              "env_vars": [],
+              "kubernetes_pod_annotations": [],
+              "kubernetes_pod_labels": [],
+              "kubernetes_secrets": [],
+              "kubernetes_shared_mem_size": {},
+              "kubernetes_tolerations": [],
+              "mounted_volumes": [],
+              "filename": "face-detector-training.ipynb",
+              "runtime_image": "quay.io/modh/runtime-images@sha256:8df90db22b29afb1cd9c81d52be9145fed50e3b04ec80bb7ea7ecaa7476dbe5c",
+              "cpu": 4,
+              "memory": 16
+            },
+            "label": "training",
+            "ui_data": {
+              "label": "training",
+              "image": "/notebook/face-detection/face-detection/static/elyra/notebook.svg",
+              "x_pos": 58,
+              "y_pos": 77,
+              "description": "Run notebook file"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              }
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "6fa9f19a-14a5-45db-83ac-3a2195d33866",
+          "type": "execution_node",
+          "op": "execute-notebook-node",
+          "app_data": {
+            "component_parameters": {
+              "dependencies": [],
+              "include_subdirectories": false,
+              "outputs": [
+                "vars.txt"
+              ],
+              "env_vars": [
+                {
+                  "env_var": "AWS_S3_ENDPOINT",
+                  "value": "http://minio-ml-workshop.minio.svc.cluster.local:9000"
+                },
+                {
+                  "env_var": "AWS_ACCESS_KEY_ID",
+                  "value": "minio"
+                },
+                {
+                  "env_var": "AWS_SECRET_ACCESS_KEY",
+                  "value": "minio123"
+                },
+                {
+                  "env_var": "AWS_S3_BUCKET",
+                  "value": "face-detection"
+                }
+              ],
+              "kubernetes_pod_annotations": [],
+              "kubernetes_pod_labels": [],
+              "kubernetes_secrets": [],
+              "kubernetes_shared_mem_size": {},
+              "kubernetes_tolerations": [],
+              "mounted_volumes": [],
+              "filename": "upload-model.ipynb",
+              "runtime_image": "quay.io/modh/runtime-images@sha256:8df90db22b29afb1cd9c81d52be9145fed50e3b04ec80bb7ea7ecaa7476dbe5c"
+            },
+            "label": "publish model",
+            "ui_data": {
+              "label": "publish model",
+              "image": "/notebook/face-detection/face-detection/static/elyra/notebook.svg",
+              "x_pos": 286,
+              "y_pos": 77,
+              "description": "Run notebook file"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              },
+              "links": [
+                {
+                  "id": "278e3985-a834-4029-859e-e23c08228bc8",
+                  "node_id_ref": "42958022-3bfe-42e9-ad98-38c18f2d4825",
+                  "port_id_ref": "outPort"
+                }
+              ]
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "app_data": {
+        "ui_data": {
+          "comments": []
+        },
+        "version": 8,
+        "runtime_type": "KUBEFLOW_PIPELINES",
+        "properties": {
+          "name": "face-detector",
+          "runtime": "Data Science Pipelines",
+          "pipeline_defaults": {
+            "kubernetes_shared_mem_size": {},
+            "kubernetes_pod_labels": [],
+            "kubernetes_tolerations": [],
+            "kubernetes_pod_annotations": [],
+            "mounted_volumes": [],
+            "env_vars": [],
+            "kubernetes_secrets": [],
+            "runtime_image": "quay.io/modh/runtime-images@sha256:7dd23e58291cad7a0ab4a8e04bda06492f2c027eb33b226358380db58dcdd60b"
+          }
+        }
+      },
+      "runtime_ref": ""
+    }
+  ],
+  "schemas": []
+}
