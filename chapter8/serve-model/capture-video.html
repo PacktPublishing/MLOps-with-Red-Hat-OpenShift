@@ -116,7 +116,7 @@
 
         function refreshFaceCounter(){
             $.ajax({
-                  url: 'http://localhost:8080/infer-count',
+                  url: 'http://face-detection-app-wines.apps.fmflask2.faisallabs.net/infer-count',
                   type: 'GET',
                   async: true,
                  success: function (result) {
@@ -139,7 +139,7 @@
                 photo.setAttribute('src', data);
                 console.log(btoa(imgData));
                 $.ajax({
-                  url: 'http://localhost:8080/infer',
+                  url: 'http://face-detection-app-wines.apps.fmflask2.faisallabs.net/infer',
                   type: 'POST',
                   data: btoa(imgData),
                   dataType: 'text',
