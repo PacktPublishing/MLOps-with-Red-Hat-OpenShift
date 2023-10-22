@@ -22,8 +22,12 @@ import base64
 from aiohttp_middlewares import cors_middleware
 from aiohttp_middlewares.cors import DEFAULT_ALLOW_HEADERS
 
-MODEL_SERVER = os.getenv('MODEL_SERVER', 'localhost:8033')
-REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://localhost:6379')
+# Local test
+# MODEL_SERVER = os.getenv('MODEL_SERVER', 'localhost:8033')
+# REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://localhost:6379')
+MODEL_SERVER = os.getenv('MODEL_SERVER', 'modelmesh-serving.wines.svc.cluster.local:8033')
+REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://redis.wines.svc.cluster.local:6379')
+
 GRPC_CLIENT = "grpc_client"
 REDIS_CLIENT = "redis_client"
 
