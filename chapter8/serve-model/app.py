@@ -15,7 +15,6 @@ from aiohttp import  web
 from aiohttp.web_request import Request
 from aiohttp.web_response import Response
 from aiohttp.web_app import Application
-from flask import app
 import tritonclient.grpc as grpcclient
 import numpy as np
 import base64
