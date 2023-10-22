@@ -8,25 +8,26 @@
 '''
 
 import os
-import re
 import aioredis
+
 
 from aiohttp import  web
 from aiohttp.web_request import Request
 from aiohttp.web_response import Response
 from aiohttp.web_app import Application
+from flask import app
 import tritonclient.grpc as grpcclient
 import numpy as np
 import base64
-import aiohttp_cors
+from aiohttp_middlewares import cors_middleware
+from aiohttp_middlewares.cors import DEFAULT_ALLOW_HEADERS
 
-
-MODEL_SERVER = os.getenv('MODEL_SERVER', 'modelmesh-serving.wines.svc.cluster.local:8033')
-REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://redis.wines.svc.cluster.local:6379')
+MODEL_SERVER = os.getenv('MODEL_SERVER', 'localhost:8033')
+REDIS_SERVER = os.getenv('REDIS_SERVER', 'redis://localhost:6379')
 GRPC_CLIENT = "grpc_client"
 REDIS_CLIENT = "redis_client"
 
-routes = web.RouteTableDef()
+
 
 model_name = "face-detection-ser-ov"
 
@@ -57,7 +58,8 @@ async def create_redis_client(app: Application):
     print(f"Connected to Redis at {redis}")
     app[REDIS_CLIENT]  = redis
 
-@routes.post('/infer') 
+
+
 async def infer(request: Request) -> Response:
     max_confidence_index = await infer_request(request)
     #2 is face
@@ -106,7 +108,7 @@ async def infer_request(request) -> bool:
     results = app[GRPC_CLIENT].infer(model_name=model_name,
                                     inputs=inputs,
                                     outputs=outputs)
-    print(f"Raw results are {results}")
+    # print(f"Raw results are {results}")
     # Get the output arrays from the results
     output0_data = results.as_numpy('pred')
     flatten_data = output0_data.flatten()
@@ -119,7 +121,7 @@ async def infer_request(request) -> bool:
 
 
 
-@routes.get('/infer-count') 
+
 async def get_infer_count(request: Request) -> Response:
     redis = app[REDIS_CLIENT]    
     value = await redis.get('face-count')
@@ -128,24 +130,18 @@ async def get_infer_count(request: Request) -> Response:
 
 
 
-app = web.Application(client_max_size=1905280)  
+
+app = web.Application(client_max_size=1905280, 
+                    middlewares=[cors_middleware(allow_all=True)])  
+
+app.add_routes([web.get('/infer-count', get_infer_count),
+                web.post('/infer', infer)])
 
 #blocking connection establishment
 create_grpc_pool(app)
 app.on_startup.append(create_redis_client)
 
-app.add_routes(routes)
-
-cors = aiohttp_cors.setup(app, defaults={
-"*": aiohttp_cors.ResourceOptions(
-    allow_credentials=True,
-    expose_headers="*",
-    allow_headers="*"
-)
-})
-
-for route in list(app.router.routes()):
-    cors.add(route)
-
-    
 web.run_app(app)
+
+
+

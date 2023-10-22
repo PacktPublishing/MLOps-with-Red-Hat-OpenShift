@@ -1,9 +1,9 @@
 aiohttp==3.8.4
+aiohttp-middlewares==2.2.0
 aioredis==2.0.1
 tritonclient==2.36.0
 openvino==2023.1.0
 openvino-dev==2023.1.0
 openvino-telemetry==2023.1.1
 asgiref==3.7.2
-aiohttp-cors==0.7.0
 tritonclient[grpc]==2.36.0
