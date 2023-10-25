@@ -20,7 +20,8 @@
               ],
               "include_subdirectories": false,
               "outputs": [
-                "face-detector-model.h5"
+                "openvino/model.bin",
+                "openvino/model.xml"
               ],
               "env_vars": [],
               "kubernetes_pod_annotations": [],
@@ -38,7 +39,7 @@
             "ui_data": {
               "label": "training",
               "image": "/notebook/face-detection/face-detection/static/elyra/notebook.svg",
-              "x_pos": 58,
+              "x_pos": 57,
               "y_pos": 77,
               "description": "Run notebook file"
             }
@@ -107,7 +108,7 @@
               "kubernetes_shared_mem_size": {},
               "kubernetes_tolerations": [],
               "mounted_volumes": [],
-              "filename": "upload-model.ipynb",
+              "filename": "upload-model-openvino.ipynb",
               "runtime_image": "quay.io/modh/runtime-images@sha256:8df90db22b29afb1cd9c81d52be9145fed50e3b04ec80bb7ea7ecaa7476dbe5c"
             },
             "label": "publish model",
@@ -167,10 +168,10 @@
           "runtime": "Data Science Pipelines",
           "pipeline_defaults": {
             "kubernetes_shared_mem_size": {},
-            "kubernetes_pod_labels": [],
             "kubernetes_tolerations": [],
-            "kubernetes_pod_annotations": [],
             "mounted_volumes": [],
+            "kubernetes_pod_labels": [],
+            "kubernetes_pod_annotations": [],
             "env_vars": [],
             "kubernetes_secrets": [],
             "runtime_image": "quay.io/modh/runtime-images@sha256:7dd23e58291cad7a0ab4a8e04bda06492f2c027eb33b226358380db58dcdd60b"
