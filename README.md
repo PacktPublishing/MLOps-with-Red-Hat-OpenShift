@@ -33,14 +33,14 @@ bucket: pachyderm
 **Following is what you need for this book:**
 This book is for MLOps and DevOps engineers, data architects, and data scientists interested in learning the OpenShift platform. Particularly, developers who want to learn MLOps and its components will find this book useful. Whether you’re a machine learning engineer or software developer, this book serves as an essential guide to building scalable and efficient machine learning workflows on the OpenShift platform.
 
-With the following software and hardware list you can run all code files present in the book (Chapter 1-8).
+With the following software and hardware list you can run all code files present in the book (Chapter 1-7).
 
 ### Software and Hardware List
 
 | Chapter  | Software required                                                                    | OS required                        |
 | -------- | -------------------------------------------------------------------------------------| -----------------------------------|
-|  	1-8	   |   	AWS Web Services(AWS) with a recent version of a modern web browser(Chrome, Edge, etc.)                                  			  | Any OS | 		
-|  	1-8	   |   	Red Hat OpenShift Client (oc)                                  			  | Any OS | 		
+|  	1-7	   |   	AWS Web Services(AWS) with a recent version of a modern web browser(Chrome, Edge, etc.)                                  			  | Any OS | 		
+|  	1-7	   |   	Red Hat OpenShift Client (oc)                                  			  | Any OS | 		
 
 
 ### Related products <Other books you may enjoy>
