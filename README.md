@@ -1,6 +1,3 @@
-
-<b><p align='center'>[![Packt Sale](https://static.packt-cdn.com/assets/images/packt+events/Improve_UX.png)](https://packt.link/algotradingpython)</p></b> 
-
 # MLOps with Red Hat OpenShift
 
 <a href="https://www.packtpub.com/product/mlops-with-red-hat-openshift/9781805120230"><img src="https://m.media-amazon.com/images/I/7163zNFGftL._SL1500_.jpg" alt="MLOps with Red Hat OpenShift" height="256px" align="right"></a>
