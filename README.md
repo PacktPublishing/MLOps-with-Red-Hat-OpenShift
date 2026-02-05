@@ -1,3 +1,5 @@
+<p align='center'><a href='https://www.eventbrite.com/e/machine-learning-and-generative-ai-system-design-workshop-tickets-1975103644168?aff=Github'><img src='https://static.packt-cdn.com/assets/images/packt+events/Sairam_ML_GenAI_Github_banner.png'/></a></p>
+
 # MLOps with Red Hat OpenShift
 
 <a href="https://www.packtpub.com/product/mlops-with-red-hat-openshift/9781805120230"><img src="https://m.media-amazon.com/images/I/7163zNFGftL._SL1500_.jpg" alt="MLOps with Red Hat OpenShift" height="256px" align="right"></a>
