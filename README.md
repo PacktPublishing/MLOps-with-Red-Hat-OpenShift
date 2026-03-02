@@ -1,3 +1,5 @@
+<p align='center'><a href='https://www.eventbrite.com/e/ship-production-pytorch-system-in-a-day-train-optimize-deploy-workshop-tickets-1983348934052?aff=GitHub'><img src='https://static.packt-cdn.com/assets/images/packt+events/workshop_ashish_github.png'/></a></p>
+
 # MLOps with Red Hat OpenShift
 
 <a href="https://www.packtpub.com/product/mlops-with-red-hat-openshift/9781805120230"><img src="https://m.media-amazon.com/images/I/7163zNFGftL._SL1500_.jpg" alt="MLOps with Red Hat OpenShift" height="256px" align="right"></a>
